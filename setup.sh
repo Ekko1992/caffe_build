@@ -1,0 +1,101 @@
+#!/bin/bash
+#script for cuda 8.0 + opencv 2.4.13 + cudnn + caffe installation
+#suitable for linux ubuntu 16.04 with gtx-1080 graphics card
+
+#1 install necessary tools
+sudo apt-get install axel
+sudo apt-get install g++
+sudo apt-get install git
+sudo apt-get install freeglut3-dev
+sudo apt-get install build-essential libgtk2.0-dev libavcodec-dev libavformat-dev libjpeg.dev libtiff4.dev libswscale-dev libjasper-dev
+sudo apt-get install cmake
+
+#2 download cuda 8.0
+axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+#install cuda
+sudo dpkg -i cuda-repo-ubuntu1604_8.0.61-1_amd64.deb
+sudo apt-get update
+sudo apt-get install cuda
+#add cuda to path
+sudo sh -c 'echo "export PATH=/usr/local/cuda-8.0/bin:$PATH" >> /etc/profile'
+sudo sh -c 'echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH" >> /etc/profile'
+
+#3 ban nouveau driver
+sudo sh -c 'echo "blacklist nouveau" >> /etc/modprobe.d/blacklist-nouveau.conf'
+sudo sh -c 'echo "options nouveau modset=0" >> /etc/modprobe.d/blacklist-nouveau.conf'
+#sudo update-initramfs -u
+
+#4 download and install caffe
+git clone https://github.com/BVLC/caffe.git
+#install third-party libriaries
+sudo apt-get install libatlas-base-dev
+sudo apt-get install libprotobuf-dev
+sudo apt-get install libleveldb-dev
+sudo apt-get install libsnappy-dev
+sudo apt-get install libopencv-dev
+sudo apt-get install libboost-all-dev
+sudo apt-get install libhdf5-serial-dev
+sudo apt-get install libgflags-dev
+sudo apt-get install libgoogle-glog-dev
+sudo apt-get install liblmdb-dev
+sudo apt-get install protobuf-compiler
+
+#5 download and install opencv
+axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/opencv-2.4.13.zip
+unzip opencv-2.4.13.zip
+cd opencv-2.4.13
+cmake .
+make -j8
+sudo make install
+#set up configuration for opencv
+sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
+sudo ldconfig
+sudo sh -c 'echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig" >> /etc/bash.bashrc'
+sudo sh -c 'echo "export PKG_CONFIG_PATH" >> /etc/bash.bashrc'
+source /etc/bash.bashrc
+sudo updatedb
+
+#6 install cudnn
+cd ..
+axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cudnn-8.0-linux-x64-v5.1.tgz
+sudo tar xvf cudnn-8.0-linux-x64-v5.1.tgz
+sudo cp cuda/include/*.h /usr/local/include/
+sudo cp cuda/lib64/lib* /usr/local/lib/
+sudo chmod +r /usr/local/lib/libcudnn.so.5.1.10
+sudo ln -sf /usr/local/lib/libcudnn.so.5.1.10 /usr/local/lib/libcudnn.so.5
+sudo ln -sf /usr/local/lib/libcudnn.so.5 /usr/local/lib/libcudnn.so
+sudo ldconfig
+
+#7 caffe python interface
+#7.1 install pip
+cd caffe
+
+sudo apt-get install python-pip python-dev build-essential
+sudo pip install --upgrade pip
+sudo apt-get install python-numpy
+sudo apt-get install python-numpy python-scipy python-matplotlib python-sklearn python-skimage python-h5py python-protobuf python-leveldb python-networkx python-nose python-pandas python-gflags cython ipython
+
+#7.2 install dependent libraries
+sudo apt-get install gfortran
+for req in $(cat python/requirements.txt); do sudo pip install $req; done
+sudo pip install -r python/requirements.txt
+
+#7.3 compile python interface
+pwdpath=`pwd`
+sudo sh -c 'echo "export PYTHONPATH="$pwdpath"python:$PYTHONPATH" >> ~/.bashrc'
+sudo ldconfig
+
+
+#8 compile caffe
+axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/Makefile.config
+make all -j4
+make pycaffe -j4
+sudo sh -c 'echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/caffe.conf'
+sudo ldconfig
+
+
+
+
+
+
+
