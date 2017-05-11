@@ -17,8 +17,8 @@ sudo dpkg -i cuda-repo-ubuntu1404_8.0.61-1_amd64.deb
 sudo apt-get update
 sudo apt-get install cuda
 #add cuda to path
-sudo sh -c 'echo "export PATH=/usr/local/cuda-8.0/bin:$PATH" >> /etc/profile'
-sudo sh -c 'echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH" >> /etc/profile'
+sudo sh -c 'echo "export PATH=/usr/local/cuda-8.0/bin:\$PATH" >> /etc/profile'
+sudo sh -c 'echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:\$LD_LIBRARY_PATH" >> /etc/profile'
 
 #3 ban nouveau driver
 sudo sh -c 'echo "blacklist nouveau" >> /etc/modprobe.d/blacklist-nouveau.conf'
@@ -50,7 +50,7 @@ sudo make install
 #set up configuration for opencv
 sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
 sudo ldconfig
-sudo sh -c 'echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig" >> /etc/bash.bashrc'
+sudo sh -c 'echo "PKG_CONFIG_PATH=\$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig" >> /etc/bash.bashrc'
 sudo sh -c 'echo "export PKG_CONFIG_PATH" >> /etc/bash.bashrc'
 source /etc/bash.bashrc
 sudo updatedb
@@ -77,13 +77,13 @@ sudo apt-get install python-numpy python-scipy python-matplotlib python-sklearn 
 
 #7.2 install dependent libraries
 sudo apt-get install gfortran
-for req in $(cat python/requirements.txt); do sudo pip install $req; done
+for req in $(cat python/requirements.txt); do sudo -H pip install $req; done
 sudo pip install -r python/requirements.txt
 
 #7.3 compile python interface
-pwdpath=`pwd`
-sudo sh -c 'echo "export PYTHONPATH="$pwdpath"python:$PYTHONPATH" >> ~/.bashrc'
+sudo sh -c 'echo "export PYTHONPATH=`pwd`:\$PYTHONPATH" >> ~/.bashrc'
 sudo ldconfig
+source ~/.bashrc
 
 
 #8 compile caffe
