@@ -3,6 +3,7 @@
 #suitable for linux ubuntu 14.04 with gtx-1080 graphics card
 
 #1 install necessary tools
+sudo apt-get install -y unzip
 sudo apt-get install -y axel
 sudo apt-get install -y g++
 sudo apt-get install -y git
