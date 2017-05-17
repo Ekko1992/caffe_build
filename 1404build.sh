@@ -20,6 +20,7 @@ sudo apt-get install -y cuda
 #add cuda to path
 sudo sh -c 'echo "export PATH=/usr/local/cuda-8.0/bin:\$PATH" >> /etc/profile'
 sudo sh -c 'echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:\$LD_LIBRARY_PATH" >> /etc/profile'
+source /etc/profile
 
 #3 ban nouveau driver
 sudo sh -c 'echo "blacklist nouveau" >> /etc/modprobe.d/blacklist-nouveau.conf'
