@@ -12,8 +12,9 @@ sudo apt-get install -y build-essential libgtk2.0-dev libavcodec-dev libavformat
 sudo apt-get install -y cmake
 
 #configure locale
-export LC_ALL="en_US.UTF-8"
-export LC_CTYPE="en_US.UTF-8"
+sudo sh -c 'echo "export LC_ALL="en_US.UTF-8" >> /etc/profile'
+sudo sh -c 'echo "export LC_CTYPE="en_US.UTF-8" >> /etc/profile'
+source /etc/profile
 sudo dpkg-reconfigure locales
 
 #2 download cuda 8.0
