@@ -11,6 +11,11 @@ sudo apt-get install -y freeglut3-dev
 sudo apt-get install -y build-essential libgtk2.0-dev libavcodec-dev libavformat-dev libjpeg.dev libtiff4.dev libswscale-dev libjasper-dev
 sudo apt-get install -y cmake
 
+#configure locale
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+sudo dpkg-reconfigure locales
+
 #2 download cuda 8.0
 axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cuda-repo-ubuntu1404_8.0.61-1_amd64.deb
 #install cuda
