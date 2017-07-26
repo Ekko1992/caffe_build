@@ -4,7 +4,6 @@
 
 #1 install necessary tools
 sudo apt-get install -y unzip
-sudo apt-get install -y axel
 sudo apt-get install -y g++
 sudo apt-get install -y git
 sudo apt-get install -y freeglut3-dev
@@ -18,7 +17,7 @@ source /etc/profile
 sudo dpkg-reconfigure locales
 
 #2 download cuda 8.0
-axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cuda-repo-ubuntu1404_8.0.61-1_amd64.deb
+wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cuda-repo-ubuntu1404_8.0.61-1_amd64.deb
 #install cuda
 sudo dpkg -i cuda-repo-ubuntu1404_8.0.61-1_amd64.deb
 sudo apt-get update
@@ -49,7 +48,7 @@ sudo apt-get install -y liblmdb-dev
 sudo apt-get install -y protobuf-compiler
 
 #5 download and install opencv
-axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/opencv-2.4.13.zip
+wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/opencv-2.4.13.zip
 unzip opencv-2.4.13.zip
 cd opencv-2.4.13
 cmake .
@@ -65,7 +64,7 @@ sudo updatedb
 
 #6 install cudnn
 cd ..
-axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cudnn-8.0-linux-x64-v5.1.tgz
+wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cudnn-8.0-linux-x64-v5.1.tgz
 sudo tar xvf cudnn-8.0-linux-x64-v5.1.tgz
 sudo cp cuda/include/*.h /usr/local/include/
 sudo cp cuda/lib64/lib* /usr/local/lib/
@@ -79,14 +78,14 @@ sudo ldconfig
 cd caffe
 
 sudo apt-get install -y python-pip python-dev build-essential
-sudo pip install --upgrade pip
+sudo -H pip install --upgrade pip
 sudo apt-get install -y python-numpy
 sudo apt-get install -y python-numpy python-scipy python-matplotlib python-sklearn python-skimage python-h5py python-protobuf python-leveldb python-networkx python-nose python-pandas python-gflags cython ipython
 
 #7.2 install dependent libraries
 sudo apt-get install -y gfortran
 for req in $(cat python/requirements.txt); do sudo -H pip install $req; done
-sudo pip install -r python/requirements.txt
+sudo -H pip install -r python/requirements.txt
 
 #7.3 compile python interface
 sudo sh -c 'echo "export PYTHONPATH=`pwd`:\$PYTHONPATH" >> ~/.bashrc'
@@ -95,7 +94,7 @@ source ~/.bashrc
 
 
 #8 compile caffe
-axel https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/Makefile.config
+wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/Makefile.config
 make all -j4
 make pycaffe -j4
 sudo sh -c 'echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/caffe.conf'
