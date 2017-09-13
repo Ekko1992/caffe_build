@@ -27,12 +27,7 @@ sudo sh -c 'echo "export PATH=/usr/local/cuda-8.0/bin:\$PATH" >> /etc/profile'
 sudo sh -c 'echo "export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:\$LD_LIBRARY_PATH" >> /etc/profile'
 source /etc/profile
 
-#3 ban nouveau driver
-sudo sh -c 'echo "blacklist nouveau" >> /etc/modprobe.d/blacklist-nouveau.conf'
-sudo sh -c 'echo "options nouveau modset=0" >> /etc/modprobe.d/blacklist-nouveau.conf'
-#sudo update-initramfs -u
-
-#4 download and install caffe
+#3 download and install caffe
 git clone https://github.com/BVLC/caffe.git
 #install third-party libriaries
 sudo apt-get install -y libatlas-base-dev
@@ -47,7 +42,7 @@ sudo apt-get install -y libgoogle-glog-dev
 sudo apt-get install -y liblmdb-dev
 sudo apt-get install -y protobuf-compiler
 
-#5 download and install opencv
+#4 download and install opencv
 wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/opencv-2.4.13.zip
 unzip opencv-2.4.13.zip
 cd opencv-2.4.13
@@ -62,7 +57,7 @@ sudo sh -c 'echo "export PKG_CONFIG_PATH" >> /etc/bash.bashrc'
 source /etc/bash.bashrc
 sudo updatedb
 
-#6 install cudnn
+#5 install cudnn
 cd ..
 wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/cudnn-8.0-linux-x64-v5.1.tgz
 sudo tar xvf cudnn-8.0-linux-x64-v5.1.tgz
@@ -73,8 +68,8 @@ sudo ln -sf /usr/local/lib/libcudnn.so.5.1.10 /usr/local/lib/libcudnn.so.5
 sudo ln -sf /usr/local/lib/libcudnn.so.5 /usr/local/lib/libcudnn.so
 sudo ldconfig
 
-#7 caffe python interface
-#7.1 install pip
+#6 caffe python interface
+#6.1 install pip
 cd caffe
 
 sudo apt-get install -y python-pip python-dev build-essential
@@ -82,18 +77,18 @@ sudo -H pip install --upgrade pip
 sudo apt-get install -y python-numpy
 sudo apt-get install -y python-numpy python-scipy python-matplotlib python-sklearn python-skimage python-h5py python-protobuf python-leveldb python-networkx python-nose python-pandas python-gflags cython ipython
 
-#7.2 install dependent libraries
+#6.2 install dependent libraries
 sudo apt-get install gfortran
 for req in $(cat python/requirements.txt); do sudo -H pip install $req; done
 sudo -H pip install -r python/requirements.txt
 
-#7.3 compile python interface
+#6.3 compile python interface
 sudo sh -c 'echo "export PYTHONPATH=`pwd`:\$PYTHONPATH" >> ~/.bashrc'
 sudo ldconfig
 source ~/.bashrc
 
 
-#8 compile caffe
+#7 compile caffe
 wget https://s3-us-west-2.amazonaws.com/vmaxx1/caffesetup/Makefile.config
 make all -j4
 make pycaffe -j4
