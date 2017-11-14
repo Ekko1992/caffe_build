@@ -1,8 +1,11 @@
-# caffe_build
-shell script used for building caffe envoriment
+# environment_build
+shell script used for building Caffe and Sunergy runtime environment
+====================================================================
+dependency packages
+-----------------------
+Sunergy:
+cuda 9.0
+cudnn 7.0
 
-aimed at ubuntu16.04LS/14.04LS + GTX1080
+Caffe:
 
-$$$$$$$$$$$$$$
-Fee:5 yuan/each time
-$$$$$$$$$$$$$$
