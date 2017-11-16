@@ -8,4 +8,8 @@ cuda 9.0
 cudnn 7.0
 
 Caffe:
+cuda 9.0
+cudnn 7.0
+opencv 3.3
+
 
