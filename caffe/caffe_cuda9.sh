@@ -46,8 +46,11 @@ git clone https://github.com/BVLC/caffe.git
 cp Makefile.config caffe/
 cd caffe
 for req in $(cat python/requirements.txt); do sudo pip install $req; done
-mkdir build
-cd build
-cmake ..
 make all
-make install
+make test
+make runtest
+make pycaffe
+sudo sh -c 'echo "export PYTHONPATH=~/caffe/python:\$PYTHONPATH" >> ~/.bashrc'
+source ~/.bashrc
+
+
