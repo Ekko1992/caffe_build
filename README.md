@@ -1,4 +1,4 @@
-# environment_build
+# Environment_build
 shell script used for building Caffe and Sunergy runtime environment
 ====================================================================
 dependency packages
